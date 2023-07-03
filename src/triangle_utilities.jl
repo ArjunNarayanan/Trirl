@@ -14,9 +14,9 @@ PPO = ProximalPolicyOptimization
 
 const NUM_ACTIONS_PER_EDGE = 3 # flip, split, collapse
 const NO_ACTION_REWARD = -2
+const NUM_EDGES_PER_ELEMENT = 3
 
 include("state.jl")
 include("environment_wrapper.jl")
 include("policy.jl")
-# include("action_probabilities.jl")
-# include("step.jl")
+include("step.jl")
