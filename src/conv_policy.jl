@@ -38,7 +38,7 @@ function (m::MeshBlock)(feature_matrix, column_pairs)
 end
 
 
-struct Policy
+struct ConvPolicy
     in_features
     hidden_features
     out_features
@@ -47,7 +47,7 @@ struct Policy
     blocks
     input_linear_layer
     output_linear_layer
-    function Policy(in_features, hidden_features, out_features, number_of_layers)
+    function ConvPolicy(in_features, hidden_features, out_features, number_of_layers)
         input_linear_layer = Dense(in_features, hidden_features)
         layernorm = LayerNorm(hidden_features)
         blocks = [MeshBlock(hidden_features) for i in 1:number_of_layers]
@@ -66,14 +66,14 @@ struct Policy
 end
 
 
-Flux.@functor Policy
+Flux.@functor ConvPolicy
 
-function Base.show(io::IO, p::Policy)
+function Base.show(io::IO, p::ConvPolicy)
     s = "Policy\n\t$(p.hidden_features) channels\n\t$(p.number_of_layers) layers"
     println(io, s)
 end
 
-function (p::Policy)(feature_matrix, column_pairs)
+function (p::ConvPolicy)(feature_matrix, column_pairs)
     y = p.input_linear_layer(feature_matrix)
     y = p.layernorm(y)
 
@@ -86,7 +86,7 @@ function (p::Policy)(feature_matrix, column_pairs)
 end
 
 
-function PPO.action_probabilities(policy, state)
+function PPO.action_probabilities(policy::ConvPolicy, state)
     feature_matrix, column_pairs = state.feature_matrix, state.column_pairs
     output = policy(feature_matrix, column_pairs)
     logits = vec(output) + state.action_mask
