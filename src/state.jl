@@ -82,7 +82,7 @@ function PPO.state(wrapper)
     vd = vertex_degree[template]
 
     matrix = vcat(vs, vd)
-    opt_return = wrapper.current_score - wrapper.opt_score
+    opt_return = Float32(wrapper.current_score - wrapper.opt_score)
 
     s = StateData(matrix, am, opt_return)
 

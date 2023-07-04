@@ -1,7 +1,9 @@
 using TOML
+using Pkg
+Pkg.activate(".")
 
 include("src/triangle_utilities.jl")
-include("src/plot.jl")
+# include("src/plot.jl")
 
 
 function initialize_environment(env_config)
