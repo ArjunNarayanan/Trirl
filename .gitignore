@@ -1,3 +1,5 @@
 output/
 Manifest.toml
 *.out
+.DS_Store
+figures/plots

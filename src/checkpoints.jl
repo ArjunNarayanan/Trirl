@@ -110,3 +110,22 @@ function average_normalized_returns_and_action_stats(policy, wrapper, num_trajec
 
     return mean, std, stats
 end
+
+function single_trajectory_normalized_return(policy, wrapper)
+    maxreturn = wrapper.current_score - wrapper.opt_score
+    if maxreturn == 0
+        return 1.0
+    else
+        ret = PPO.single_trajectory_return(policy, wrapper)
+        return ret / maxreturn
+    end
+end
+
+function average_normalized_returns(policy, wrapper, num_trajectories)
+    ret = zeros(num_trajectories)
+    for idx = 1:num_trajectories
+        PPO.reset!(wrapper)
+        ret[idx] = single_trajectory_normalized_return(policy, wrapper)
+    end
+    return Flux.mean(ret), Flux.std(ret)
+end

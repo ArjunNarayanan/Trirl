@@ -80,3 +80,30 @@ function smooth_wrapper!(wrapper, num_iterations = 1)
         TM.averagesmoothing!(wrapper.env.mesh)
     end
 end
+
+
+function plot_trajectory(policy, wrapper, root_directory)
+    if !isdir(root_directory)
+        mkpath(root_directory)
+    end
+
+    fig_name = "figure-" * lpad(0, 3, "0") * ".png"
+    filename = joinpath(root_directory, fig_name)
+    plot_wrapper(wrapper, filename=filename)
+
+    fig_index = 1
+    done = PPO.is_terminal(wrapper)
+    while !done 
+        probs = PPO.action_probabilities(policy, PPO.state(wrapper))
+        action = rand(Categorical(probs))
+
+        PPO.step!(wrapper, action)
+        
+        fig_name = "figure-" * lpad(fig_index, 3, "0") * ".png"
+        filename = joinpath(root_directory, fig_name)
+        plot_wrapper(wrapper, filename=filename)
+        fig_index += 1
+
+        done = PPO.is_terminal(wrapper)
+    end
+end
