@@ -1,6 +1,6 @@
 using TOML
-using Pkg
-Pkg.activate(".")
+# using Pkg
+# Pkg.activate(".")
 
 include("src/triangle_utilities.jl")
 # include("src/plot.jl")
@@ -27,7 +27,7 @@ end
 
 
 
-ARGS = ["output/model-1/config.toml"]
+# ARGS = ["output/model-1/config.toml"]
 @assert length(ARGS) == 1 "Missing path to config file"
 config_file = ARGS[1]
 println("\t\tUSING CONFIG FILE : ", config_file)

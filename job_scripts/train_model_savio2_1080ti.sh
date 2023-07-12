@@ -1,6 +1,6 @@
 #!/bin/bash
 # Job name:
-#SBATCH --job-name=train-Trirl-model-1
+#SBATCH --job-name=train-Trirl-model-3
 #
 # Account:
 #SBATCH --account=fc_biome
@@ -31,4 +31,4 @@
 export JULIA_DEPOT_PATH=/global/scratch/users/arjunnarayanan/environments/.julia
 module load julia
 
-julia train_model.jl output/model-1/config.toml
+julia train_model.jl output/model-3/config.toml
