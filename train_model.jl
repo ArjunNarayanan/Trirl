@@ -7,10 +7,12 @@ include("src/triangle_utilities.jl")
 
 
 function initialize_environment(env_config)
+    allow_vertex_insert = get(env_config, "allow_vertex_insert", true)
     env = RandPolyWrapper(
         env_config["polygon_degree"],
         env_config["hmax"],
         env_config["max_actions"],
+        allow_vertex_insert
     )
     return env
 end

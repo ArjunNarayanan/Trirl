@@ -3,3 +3,4 @@ Manifest.toml
 *.out
 .DS_Store
 figures/plots
+job_scripts/*

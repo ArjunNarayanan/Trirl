@@ -17,9 +17,9 @@ function get_desired_degree(initial_boundary_points, vertex_on_boundary)
     return desired_degree
 end
 
-function generate_random_game_environment(polygon_degree, hmax)
+function generate_random_game_environment(polygon_degree, hmax, allow_vertex_insert=true)
     boundary_pts = RQ.random_polygon(polygon_degree)
-    mesh = RQ.tri_mesh(boundary_pts, hmax = hmax, allow_vertex_insert = true)
+    mesh = RQ.tri_mesh(boundary_pts, hmax = hmax, allow_vertex_insert = allow_vertex_insert)
     mesh = TM.Mesh(mesh.p, mesh.t)
     
     vertex_on_boundary = TM.active_vertex_on_boundary(mesh)
@@ -52,11 +52,12 @@ mutable struct RandPolyWrapper
     opt_score 
     is_terminated 
     reward
-    function RandPolyWrapper(polygon_degree, hmax, max_actions)
+    allow_vertex_insert
+    function RandPolyWrapper(polygon_degree, hmax, max_actions, allow_vertex_insert=true)
         @assert max_actions > 0
         @assert polygon_degree > 3
 
-        env = generate_random_game_environment(polygon_degree, hmax)
+        env = generate_random_game_environment(polygon_degree, hmax, allow_vertex_insert)
         num_actions = 0
         current_score = global_score(env.vertex_score)
         opt_score = optimum_score(env.vertex_score)
@@ -72,7 +73,8 @@ mutable struct RandPolyWrapper
             current_score, 
             opt_score,
             is_terminated, 
-            reward
+            reward,
+            allow_vertex_insert
         )
     end
 end
