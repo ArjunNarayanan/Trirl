@@ -38,7 +38,13 @@ config = TOML.parsefile(config_file)
 wrapper = initialize_environment(config["environment"])
 policy = initialize_policy(config["policy"]) |> gpu
 
-optimizer = ADAM(1f-4)
+opt_config = config["optimizer"]
+lr = Float32(opt_config["lr"])
+decay = Float32(opt_config["decay"])
+decay_step = opt_config["decay_step"]
+adam_optimizer = ADAM(lr)
+scheduler = ExpDecay(1f0, decay, decay_step)
+optimizer = Flux.Optimise.Optimiser(adam_optimizer, scheduler)
 
 evaluator_config = config["evaluator"]
 default_outputdir = dirname(config_file)
