@@ -1,19 +1,33 @@
+using TOML
 using BSON
 include("../src/triangle_utilities.jl")
 include("../src/environment_wrapper.jl")
 include("../src/plot.jl")
 
-input_dir = "output/model-3"
+input_dir = "output/model-6"
+
+config_file = joinpath(input_dir, "config.toml")
+config = TOML.parsefile(config_file)
+
 data_filename = joinpath(input_dir, "best_model.bson")
 data = BSON.load(data_filename)[:data]
 policy = data["policy"]
-rollout = 1
 
-wrapper = RandPolyWrapper(20, 0.4, 40)
+env_config = config["environment"]
+wrapper = RandPolyWrapper(
+    env_config["polygon_degree"],
+    env_config["hmax"],
+    env_config["max_actions"]
+)
 plot_wrapper(wrapper)
 
-ret, dev = average_normalized_returns(policy, wrapper, 100)
+# ret, dev = average_normalized_returns(policy, wrapper, 100)
+# ret, dev, actions = average_normalized_returns_and_action_stats(policy, wrapper, 100)
 
-output_dir = joinpath(input_dir, "plots", "rollout-" * string(rollout))
+
+rollout = 1
+
+PPO.reset!(wrapper)
+output_dir = joinpath(input_dir, "figures", "rollout-" * string(rollout))
 plot_trajectory(policy, wrapper, output_dir)
 rollout += 1
