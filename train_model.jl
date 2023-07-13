@@ -42,8 +42,9 @@ opt_config = config["optimizer"]
 lr = Float32(opt_config["lr"])
 decay = Float32(opt_config["decay"])
 decay_step = opt_config["decay_step"]
+lr_clip = opt_config["clip"]
 adam_optimizer = ADAM(lr)
-scheduler = ExpDecay(1f0, decay, decay_step)
+scheduler = ExpDecay(1f0, decay, decay_step, lr_clip)
 optimizer = Flux.Optimise.Optimiser(adam_optimizer, scheduler)
 
 evaluator_config = config["evaluator"]
