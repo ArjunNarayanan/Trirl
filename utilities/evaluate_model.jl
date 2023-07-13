@@ -4,22 +4,30 @@ include("../src/triangle_utilities.jl")
 include("../src/environment_wrapper.jl")
 include("../src/plot.jl")
 
+function initialize_environment(env_config)
+    allow_vertex_insert = get(env_config, "allow_vertex_insert", true)
+    env = RandPolyWrapper(
+        env_config["polygon_degree"],
+        env_config["hmax"],
+        env_config["max_actions"],
+        allow_vertex_insert
+    )
+    return env
+end
+
 input_dir = "output/model-6"
 
 config_file = joinpath(input_dir, "config.toml")
 config = TOML.parsefile(config_file)
 
 data_filename = joinpath(input_dir, "best_model.bson")
-data = BSON.load(data_filename)[:data]
+data = BSON.load(data_filename)[:data];
 policy = data["policy"]
 
 env_config = config["environment"]
-wrapper = RandPolyWrapper(
-    env_config["polygon_degree"],
-    env_config["hmax"],
-    env_config["max_actions"]
-)
-plot_wrapper(wrapper)
+wrapper = initialize_environment(env_config)
+
+# plot_wrapper(wrapper)
 
 # ret, dev = average_normalized_returns(policy, wrapper, 100)
 # ret, dev, actions = average_normalized_returns_and_action_stats(policy, wrapper, 100)

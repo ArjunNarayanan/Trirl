@@ -85,7 +85,12 @@ function Base.show(io::IO, wrapper::RandPolyWrapper)
 end
 
 function PPO.reset!(wrapper)
-    env = generate_random_game_environment(wrapper.polygon_degree, wrapper.hmax)
+    env = generate_random_game_environment(
+        wrapper.polygon_degree, 
+        wrapper.hmax,
+        wrapper.allow_vertex_insert
+    )
+    
     wrapper.env = env
     wrapper.current_score = global_score(env.vertex_score)
     wrapper.opt_score = optimum_score(env.vertex_score)
