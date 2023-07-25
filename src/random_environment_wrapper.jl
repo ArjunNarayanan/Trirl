@@ -84,7 +84,7 @@ function Base.show(io::IO, wrapper::RandPolyWrapper)
     show(io, wrapper.env)
 end
 
-function PPO.reset!(wrapper)
+function PPO.reset!(wrapper::RandPolyWrapper)
     env = generate_random_game_environment(
         wrapper.polygon_degree, 
         wrapper.hmax,

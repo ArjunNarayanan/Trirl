@@ -3,7 +3,7 @@ include("../src/triangle_utilities.jl")
 using PyPlot
 
 
-input_dir = "output/model-6/"
+input_dir = "output/model-8/"
 output_dir = joinpath(input_dir, "figures")
 
 if !isdir(output_dir)
@@ -24,7 +24,7 @@ fig, ax = subplots()
 ax.plot(mean_returns)
 ax.fill_between(1:length(mean_returns),lower_bound, upper_bound, alpha = 0.4)
 ax.grid()
-ax.set_ylim(top=1.0)
+ax.set_ylim([-1,1])
 ax.set_xlabel("Epochs")
 ax.set_ylabel("Mean returns")
 fig

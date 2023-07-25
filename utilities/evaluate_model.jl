@@ -1,7 +1,7 @@
 using TOML
 using BSON
 include("../src/triangle_utilities.jl")
-include("../src/environment_wrapper.jl")
+include("../src/random_environment_wrapper.jl")
 include("../src/plot.jl")
 
 function initialize_environment(env_config)
@@ -15,7 +15,7 @@ function initialize_environment(env_config)
     return env
 end
 
-input_dir = "output/model-6"
+input_dir = "output/model-5"
 
 config_file = joinpath(input_dir, "config.toml")
 config = TOML.parsefile(config_file)

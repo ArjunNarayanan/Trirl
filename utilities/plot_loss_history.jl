@@ -3,7 +3,7 @@ include("../src/triangle_utilities.jl")
 using PyPlot
 
 
-input_dir = "output/model-6/"
+input_dir = "output/model-9/"
 output_dir = joinpath(input_dir, "figures")
 
 if !isdir(output_dir)
@@ -32,7 +32,7 @@ ax.plot(entropy_loss)
 ax.grid()
 ax.set_title("Loss history of entropy regularization")
 ax.set_xlabel("PPO Iterations")
-ax.set_ylabel("Policy entropy")
+ax.set_ylabel("-ve Policy entropy")
 fig.tight_layout()
 fig
 output_file = joinpath(output_dir, "entropy_loss_history.png")

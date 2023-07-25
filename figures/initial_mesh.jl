@@ -29,7 +29,11 @@ fig = plot_polygon(boundary_points)
 output_file = "figures/plots/boundary.png"
 fig.savefig(output_file)
 
-mesh = RQ.tri_mesh(boundary_points, hmax=0.4, allow_vertex_insert=false)
+mesh = RQ.tri_mesh(boundary_points, 
+hmax=0.8, 
+allow_vertex_insert=true
+)
+
 fig, ax = MP.plot_mesh(
     mesh.p,
     mesh.t
@@ -43,3 +47,4 @@ quad_mesh = RQ.triquad_refine(mesh.p, q, mesh.t)
 fig, ax = PQ.plot_mesh(quad_mesh.p, quad_mesh.t)
 fig
 output_file = "figures/plots/quad.png"
+fig.savefig(output_file)

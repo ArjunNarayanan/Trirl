@@ -129,3 +129,59 @@ function average_normalized_returns(policy, wrapper, num_trajectories)
     end
     return Flux.mean(ret), Flux.std(ret)
 end
+
+function best_single_trajectory_return(policy, wrapper)
+    done = PPO.is_terminal(wrapper)
+
+    initial_score = wrapper.current_score
+    minscore = wrapper.current_score
+
+    while !done
+        state = PPO.state(wrapper) |> gpu
+        probs = PPO.action_probabilities(policy, state) |> cpu
+        action = rand(Categorical(probs))
+
+        PPO.step!(wrapper, action)
+
+        minscore = min(minscore, wrapper.current_score)
+        done = PPO.is_terminal(wrapper)
+    end
+    return initial_score - minscore
+end
+
+function average_best_returns(policy, wrapper, num_trajectories)
+    ret = zeros(num_trajectories)
+    for idx = 1:num_trajectories
+        PPO.reset!(wrapper)
+        ret[idx] = best_single_trajectory_return(wrapper, policy)
+    end
+    return Flux.mean(ret), Flux.std(ret)
+end
+
+function best_normalized_single_trajectory_return(policy, wrapper)
+    max_return = wrapper.current_score - wrapper.opt_score
+    if max_return == 0
+        return 1.0
+    else
+        ret = best_single_trajectory_return(policy, wrapper)
+        return ret/max_return
+    end
+end
+
+function average_normalized_best_returns(policy, wrapper, num_trajectories)
+    ret = zeros(num_trajectories)
+    for idx = 1:num_trajectories
+        PPO.reset!(wrapper)
+        ret[idx] = best_normalized_single_trajectory_return(policy, wrapper)
+    end
+    return Flux.mean(ret), Flux.std(ret)
+end
+
+function best_normalized_best_return(policy, wrapper, num_trajectories)
+    ret = zeros(num_trajectories)
+    for idx = 1:num_trajectories
+        PPO.reset!(wrapper)
+        ret[idx] = best_normalized_single_trajectory_return(policy, wrapper)
+    end
+    return maximum(ret)
+end

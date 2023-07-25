@@ -14,7 +14,15 @@ function plot_env_score!(ax, score; coords = (0.8, 0.8), fontsize = 50)
     ax.text(coords[1], coords[2], score; tpars...)
 end
 
-function plot_env(_env, score, number_elements = false, internal_order = false, number_vertices = false)
+function plot_env(
+    _env, 
+    score, 
+    number_elements = false, 
+    internal_order = false, 
+    number_vertices = false,
+    show_scores=true
+    )
+
     mark_vertices = number_vertices ? findall(_env.mesh.active_vertex) : false
     element_numbers = number_elements ? findall(_env.mesh.active_triangle) : false
 
@@ -22,7 +30,11 @@ function plot_env(_env, score, number_elements = false, internal_order = false, 
 
     TM.reindex!(env)
     mesh = env.mesh
-    vs = TM.active_vertex_score(env)
+    if show_scores
+        vs = TM.active_vertex_score(env)
+    else
+        vs = []
+    end
 
     fig, ax = MP.plot_mesh(
         TM.active_vertex_coordinates(mesh),
@@ -34,7 +46,9 @@ function plot_env(_env, score, number_elements = false, internal_order = false, 
         number_vertices = mark_vertices
     )
     
-    plot_env_score!(ax, score)
+    if show_scores
+        plot_env_score!(ax, score)
+    end
 
     return fig, ax
 end
@@ -46,7 +60,8 @@ function plot_wrapper(
     ylim=nothing,
     smooth_iterations = 5, 
     number_elements = false,
-    number_vertices = false
+    number_vertices = false,
+    show_scores=true
     )
     smooth_wrapper!(wrapper, smooth_iterations)
 
@@ -54,7 +69,15 @@ function plot_wrapper(
 
     internal_order = number_elements
     
-    fig, ax = plot_env(wrapper.env, text, number_elements, internal_order, number_vertices)
+    fig, ax = plot_env(
+        wrapper.env, 
+        text, 
+        number_elements, 
+        internal_order, 
+        number_vertices,
+        show_scores
+    )
+
     if isnothing(xlim)
         ax.set_xlim(-1, 1)
     else
