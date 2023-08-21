@@ -1,4 +1,5 @@
-output/
+*.bson
+*.csv
 Manifest.toml
 *.out
 .DS_Store

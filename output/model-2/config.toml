@@ -1,0 +1,29 @@
+# Based on model-1
+# Decreasing entropy weight from 0.001 to 0.0005
+
+title = "Trirl model-2 config"
+
+[evaluator]
+  output_directory = "output/model-2"
+  num_evaluation_trajectories = 100
+
+[policy]
+  input_channels = 96
+  hidden_channels = 128
+  num_hidden_layers = 5
+  output_channels = 3
+
+[environment]
+  polygon_degree = 20
+  hmax = 0.2
+  max_actions = 40
+
+[PPO]
+  epsilon = 0.05
+  discount = 0.95
+  minibatch_size = 64
+  episodes_per_iteration = 50
+  epochs_per_iteration = 10
+  number_of_iterations = 2000
+  entropy = 0.0005
+

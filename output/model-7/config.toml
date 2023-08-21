@@ -1,0 +1,37 @@
+# Based on model-1
+# Removed vertex insertion for fully coarse meshes
+# Increasing entropy from 0.002 to 0.005
+
+
+title = "Trirl model-7 config"
+
+[evaluator]
+  output_directory = "output/model-7"
+  num_evaluation_trajectories = 100
+
+[policy]
+  input_channels = 96
+  hidden_channels = 128
+  num_hidden_layers = 5
+  output_channels = 3
+
+[environment]
+  polygon_degree = 20
+  hmax = 0.4
+  max_actions = 40
+  allow_vertex_insert = false
+
+[PPO]
+  epsilon = 0.05
+  discount = 0.95
+  minibatch_size = 64
+  episodes_per_iteration = 50
+  epochs_per_iteration = 10
+  number_of_iterations = 2000
+  entropy = 0.005
+
+[optimizer]
+  lr = 1e-3
+  decay = 0.95
+  decay_step = 3000
+  clip = 1e-6
