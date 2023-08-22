@@ -3,5 +3,7 @@
 Manifest.toml
 *.out
 .DS_Store
-figures/plots
+*.png
+*.pdf
+*.gif
 job_scripts/*
