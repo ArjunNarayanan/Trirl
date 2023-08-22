@@ -3,7 +3,7 @@ include("../src/triangle_utilities.jl")
 using PyPlot
 
 
-input_dir = "output/model-8/"
+input_dir = "output/model-5/"
 output_dir = joinpath(input_dir, "figures")
 
 if !isdir(output_dir)
@@ -15,6 +15,7 @@ data = BSON.load(saved_data)[:data]
 evaluator = data["evaluator"]
 
 mean_returns = evaluator.mean_returns
+print("Max performance : ", maximum(mean_returns))
 dev = evaluator.std_returns
 
 lower_bound = mean_returns - dev
@@ -28,5 +29,5 @@ ax.set_ylim([-1,1])
 ax.set_xlabel("Epochs")
 ax.set_ylabel("Mean returns")
 fig
-output_file = joinpath(output_dir, "returns.png")
-fig.savefig(output_file)
+# output_file = joinpath(output_dir, "returns.png")
+# fig.savefig(output_file)

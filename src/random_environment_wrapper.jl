@@ -1,9 +1,10 @@
 function get_desired_degree(initial_boundary_points, vertex_on_boundary)
     num_verts = length(vertex_on_boundary)
     num_initial_boundary_points = size(initial_boundary_points, 2)
-    initial_boundary_points_desired_degree = TM.get_desired_degree.(
-        TM.get_polygon_interior_angles(initial_boundary_points)
-        )
+    initial_boundary_points_desired_degree = TM.rounded_desired_degree.(
+        TM.get_polygon_interior_angles(initial_boundary_points),
+        60
+    )
 
     initial_vertex_on_boundary = falses(num_verts)
     initial_vertex_on_boundary[1:num_initial_boundary_points] .= true
